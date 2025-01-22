@@ -3,18 +3,17 @@ package com.sportsmatch.backend.services;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sportsmatch.backend.model.User;
+import com.sportsmatch.backend.model.user.User;
 import com.sportsmatch.backend.repositories.UserRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
 @Service
 public class UserService {
-    private final UserRepository userRepository;
-
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    @Autowired
+    UserRepository userRepository;
 
     public List<User> allUsers() {
         List<User> users = new ArrayList<>();

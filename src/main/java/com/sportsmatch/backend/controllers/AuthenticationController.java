@@ -1,46 +1,58 @@
 package com.sportsmatch.backend.controllers;
 
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.sportsmatch.backend.dtos.LoginUserDto;
-import com.sportsmatch.backend.dtos.RegisterUserDto;
-import com.sportsmatch.backend.model.User;
-import com.sportsmatch.backend.response.LoginResponse;
-import com.sportsmatch.backend.services.AuthenticationService;
-import com.sportsmatch.backend.services.JwtService;
 
-@RequestMapping("/auth")
+import com.sportsmatch.backend.dtos.AuthenticationDTO;
+import com.sportsmatch.backend.dtos.LoginResponseDTO;
+import com.sportsmatch.backend.dtos.RegisterUserDTO;
+import com.sportsmatch.backend.infra.security.TokenService;
+import com.sportsmatch.backend.model.user.User;
+import com.sportsmatch.backend.repositories.UserRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+
 @RestController
+@RequestMapping("auth")
 public class AuthenticationController {
-    private final JwtService jwtService;
-    
-    private final AuthenticationService authenticationService;
 
-    public AuthenticationController(JwtService jwtService, AuthenticationService authenticationService) {
-        this.jwtService = jwtService;
-        this.authenticationService = authenticationService;
-    }
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
-    @PostMapping("/signup")
-    public ResponseEntity<User> register(@RequestBody RegisterUserDto registerUserDto) {
-        User registeredUser = authenticationService.signup(registerUserDto);
+    @Autowired
+    private UserRepository userRepository;
 
-        return ResponseEntity.ok(registeredUser);
-    }
+    @Autowired
+    private TokenService tokenService;
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> authenticate(@RequestBody LoginUserDto loginUserDto) {
-        User authenticatedUser = authenticationService.authenticate(loginUserDto);
+    public ResponseEntity login(@RequestBody @Validated AuthenticationDTO data) {        
+        var usernamePassword = new UsernamePasswordAuthenticationToken(data.email(), data.password());
+        var auth = this.authenticationManager.authenticate(usernamePassword);
 
-        String jwtToken = jwtService.generateToken(authenticatedUser);
-
-        LoginResponse loginResponse = new LoginResponse();
-        loginResponse.setToken(jwtToken);
-        loginResponse.setExpiresIn(jwtService.getExpirationTime());
-
-        return ResponseEntity.ok(loginResponse);
+        var token = tokenService.generateToken((User) auth.getPrincipal());
+        return ResponseEntity.ok(new LoginResponseDTO(token));
     }
+
+    @PostMapping("/register")
+    public ResponseEntity register(@RequestBody @Validated RegisterUserDTO data) {
+        if(this.userRepository.findByEmail(data.email()) != null) return ResponseEntity.badRequest().build();
+        
+        String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
+        User newUser = new User(data.email(), encryptedPassword, data.fullName(), data.role());
+
+        this.userRepository.save(newUser);
+
+        return ResponseEntity.ok().build();
+    }
+    
+    
 }

@@ -1,10 +1,11 @@
 package com.sportsmatch.backend.controllers;
 
-import com.sportsmatch.backend.model.User;
+import com.sportsmatch.backend.model.user.User;
 import com.sportsmatch.backend.services.UserService;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,11 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/users")
 @RestController
 public class UserController {
-    private final UserService userService;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+    @Autowired
+    UserService userService;
 
     @GetMapping("/me")
     public ResponseEntity<User> authenticatedUser() {

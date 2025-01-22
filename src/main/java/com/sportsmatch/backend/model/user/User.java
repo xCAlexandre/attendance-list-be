@@ -1,9 +1,13 @@
-package com.sportsmatch.backend.model;
+package com.sportsmatch.backend.model.user;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
@@ -12,13 +16,16 @@ import java.util.List;
 
 @Entity
 @Table(name = "users")
+@NoArgsConstructor
+@AllArgsConstructor
+@Inheritance(strategy = InheritanceType.JOINED)
 public class User implements UserDetails{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false)
     private Integer id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "full_name")
     private String fullName;
 
     @Column(unique = true, length = 100, nullable = false)
@@ -35,9 +42,22 @@ public class User implements UserDetails{
     @Column(name = "updated_at")
     private Date updatedAt;
 
+    @Column(nullable = false)
+    private UserRole role;
+
+    public User(String email, String password, String fullName, UserRole role){
+        this.email = email;
+        this.password = password;
+        this.fullName = fullName;
+        this.role = role;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        if(this.role == UserRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"), new SimpleGrantedAuthority("ROLE_PLAYER"));
+        else if(this.role == UserRole.PLAYER) return List.of(new SimpleGrantedAuthority("ROLE_PLAYER"), new SimpleGrantedAuthority("ROLE_USER"));
+        else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+
     }
 
     public String getPassword() {
@@ -51,21 +71,26 @@ public class User implements UserDetails{
 
     @Override
     public boolean isAccountNonExpired() {
+        //TODO: Business logic needs to be implemented
         return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
+        //TODO: Business logic needs to be implemented
+
         return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
+        //TODO: Business logic needs to be implemented
         return true;
     }
 
     @Override
     public boolean isEnabled() {
+        //TODO: Business logic needs to be implemented
         return true;
     }
     
@@ -88,7 +113,5 @@ public class User implements UserDetails{
     public void setPassword(String password) {
         this.password = password;
     }
-
     
-    // Getters and setters
 }
