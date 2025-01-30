@@ -5,19 +5,89 @@ Este repositório contém o diagrama do banco de dados para um sistema de gerenc
 ## 📊 Diagrama do Banco de Dados (Mermaid)
 
 ```mermaid
-graph TD;
-    User[User] -->|has| Address[Address];
-    Player[Player] --|> User;
-    Admin[Admin] --|> User;
-    Player -->|has| Availability[Availability];
-    Player -->|creates| Group[Group];
-    Player -->|joins| Group;
-    Player -->|friendsWith| Player;
-    Group -->|has| Schedule[Schedule];
-    Schedule -->|belongsTo| Group;
-    Schedule -->|takesPlaceAt| Venue[Venue];
-    Admin -->|manages| Venue;
-    Venue -->|hosts| Schedule;
+classDiagram
+    class User {
+        +long Id
+        +String Name
+        +String Cpf
+        +String Age
+        +String PhoneNumber
+    }
+    
+    class Address {
+        +long Id
+        +String City
+        +String Number
+        +String Street
+        +String Neighborhood
+        +String ZipCode
+    }
+
+    class Availability {
+        +long Id
+        +List~String~ AvailableHours
+    }
+
+    class Player {
+        +List~String~ Sports
+        +Availability Availability
+        +List~Group~ CreatedGroups
+        +List~Group~ JoinedGroups
+        +List~Schedule~ ScheduledGames
+        +List~Player~ Friends
+    }
+
+    class Group {
+        +long Id
+        +String Sport
+        +Player Leader
+        +Date CreatedAt
+        +int NumberOfParticipants
+        +String RequiredLevel
+        +List~Player~ Participants
+    }
+
+    class Schedule {
+        +long Id
+        +long PlayerId
+        +String Day
+        +Date StartsAt
+        +Date EndsAt
+        +Group Group
+        +int ParticipantsCount
+        +Venue Venue
+    }
+
+    class Admin {
+        +long Id
+        +String Name
+        +String Email
+        +String PhoneNumber
+        +List~Venue~ ManagedVenues
+    }
+
+    class Venue {
+        +long Id
+        +String Name
+        +String Location
+        +String Cnpj
+        +List~Schedule~ Schedules
+    }
+
+    User "1" -- "1" Address : has
+    Player "1" -- "1" Availability : has
+    Player "1" -- "0..*" Group : creates
+    Player "0..*" -- "0..*" Group : joins
+    Player "0..*" -- "0..*" Player : friendsWith
+    Group "1" -- "0..*" Schedule : has
+    Schedule "0..*" -- "1" Group : belongsTo
+    Schedule "0..*" -- "1" Venue : takesPlaceAt
+    Admin "1" -- "0..*" Venue : manages
+    Venue "1" -- "0..*" Schedule : hosts
+
+    Player --|> User : inherits
+    Admin --|> User : inherits
+
 ```
 
 ## 🏗️ Estrutura das Entidades
