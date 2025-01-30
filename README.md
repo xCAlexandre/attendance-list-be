@@ -6,18 +6,16 @@ Este repositório contém o diagrama do banco de dados para um sistema de gerenc
 
 ```mermaid
 graph TD;
-    classDef entity fill:#f9f9f9,stroke:#333,stroke-width:2px;
-    
-    User[User]:::entity -->|has| Address[Address]:::entity;
-    Player[Player]:::entity --|> User;
-    Admin[Admin]:::entity --|> User;
-    Player -->|has| Availability[Availability]:::entity;
-    Player -->|creates| Group[Group]:::entity;
+    User[User] -->|has| Address[Address];
+    Player[Player] --|> User;
+    Admin[Admin] --|> User;
+    Player -->|has| Availability[Availability];
+    Player -->|creates| Group[Group];
     Player -->|joins| Group;
     Player -->|friendsWith| Player;
-    Group -->|has| Schedule[Schedule]:::entity;
+    Group -->|has| Schedule[Schedule];
     Schedule -->|belongsTo| Group;
-    Schedule -->|takesPlaceAt| Venue[Venue]:::entity;
+    Schedule -->|takesPlaceAt| Venue[Venue];
     Admin -->|manages| Venue;
     Venue -->|hosts| Schedule;
 ```
