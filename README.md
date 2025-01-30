@@ -5,7 +5,6 @@ Este repositório contém o diagrama do banco de dados para um sistema de gerenc
 ## 📊 Diagrama do Banco de Dados (Mermaid)
 
 ```mermaid
-title Sports Management System
 graph TD;
     classDef entity fill:#f9f9f9,stroke:#333,stroke-width:2px;
     
