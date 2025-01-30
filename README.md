@@ -34,7 +34,6 @@ classDiagram
         +List~Group~ CreatedGroups
         +List~Group~ JoinedGroups
         +List~Schedule~ ScheduledGames
-        +List~Player~ Friends
     }
 
     class Group {
@@ -74,11 +73,19 @@ classDiagram
         +List~Schedule~ Schedules
     }
 
+    class Friendship {
+        +long Id
+        +long SenderId
+        +long ReceiverId
+        +int Status
+    }
+
     User "1" -- "1" Address : has
     Player "1" -- "1" Availability : has
     Player "1" -- "0..*" Group : creates
     Player "0..*" -- "0..*" Group : joins
-    Player "0..*" -- "0..*" Player : friendsWith
+    Player "0..*" -- "0..*" Friendship : sends
+    Player "0..*" -- "0..*" Friendship : receives
     Group "1" -- "0..*" Schedule : has
     Schedule "0..*" -- "1" Group : belongsTo
     Schedule "0..*" -- "1" Venue : takesPlaceAt
