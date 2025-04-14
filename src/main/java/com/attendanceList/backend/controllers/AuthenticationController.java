@@ -1,14 +1,14 @@
-package com.sportsmatch.backend.controllers;
+package com.attendanceList.backend.controllers;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sportsmatch.backend.dtos.AuthenticationDTO;
-import com.sportsmatch.backend.dtos.LoginResponseDTO;
-import com.sportsmatch.backend.dtos.RegisterUserDTO;
-import com.sportsmatch.backend.infra.security.TokenService;
-import com.sportsmatch.backend.model.user.User;
-import com.sportsmatch.backend.repositories.UserRepository;
+import com.attendanceList.backend.dtos.AuthenticationDTO;
+import com.attendanceList.backend.dtos.LoginResponseDTO;
+import com.attendanceList.backend.dtos.RegisterUserDTO;
+import com.attendanceList.backend.infra.security.TokenService;
+import com.attendanceList.backend.model.user.User;
+import com.attendanceList.backend.repositories.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

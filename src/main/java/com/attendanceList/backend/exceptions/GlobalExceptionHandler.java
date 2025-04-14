@@ -1,4 +1,4 @@
-package com.sportsmatch.backend.exceptions;
+package com.attendanceList.backend.exceptions;
 
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ProblemDetail;

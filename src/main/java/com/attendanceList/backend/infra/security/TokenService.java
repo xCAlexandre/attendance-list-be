@@ -1,4 +1,4 @@
-package com.sportsmatch.backend.infra.security;
+package com.attendanceList.backend.infra.security;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -12,7 +12,7 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.sportsmatch.backend.model.user.User;
+import com.attendanceList.backend.model.user.User;
 
 @Service
 public class TokenService {

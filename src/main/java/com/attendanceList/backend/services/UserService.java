@@ -1,10 +1,10 @@
-package com.sportsmatch.backend.services;
+package com.attendanceList.backend.services;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sportsmatch.backend.model.user.User;
-import com.sportsmatch.backend.repositories.UserRepository;
+import com.attendanceList.backend.model.user.User;
+import com.attendanceList.backend.repositories.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

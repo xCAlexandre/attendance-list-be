@@ -1,4 +1,4 @@
-package com.sportsmatch.backend.model.user;
+package com.attendanceList.backend.model.user;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

@@ -1,4 +1,4 @@
-package com.sportsmatch.backend.model.user;
+package com.attendanceList.backend.model.user;
 
 public enum UserRole {
     ADMIN("admin"), //To access admin web

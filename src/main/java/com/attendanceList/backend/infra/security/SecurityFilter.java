@@ -1,4 +1,4 @@
-package com.sportsmatch.backend.infra.security;
+package com.attendanceList.backend.infra.security;
 
 import java.io.IOException;
 
@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.sportsmatch.backend.repositories.UserRepository;
+import com.attendanceList.backend.repositories.UserRepository;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

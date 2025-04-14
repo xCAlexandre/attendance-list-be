@@ -1,7 +1,7 @@
-package com.sportsmatch.backend.controllers;
+package com.attendanceList.backend.controllers;
 
-import com.sportsmatch.backend.model.user.User;
-import com.sportsmatch.backend.services.UserService;
+import com.attendanceList.backend.model.user.User;
+import com.attendanceList.backend.services.UserService;
 
 import java.util.List;
 
