@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.attendanceList.backend.dtos.AuthenticationDTO;
+import com.attendanceList.backend.dtos.ErrorResponseDTO;
 import com.attendanceList.backend.dtos.LoginResponseDTO;
 import com.attendanceList.backend.dtos.RegisterUserDTO;
 import com.attendanceList.backend.infra.security.TokenService;
@@ -11,6 +12,7 @@ import com.attendanceList.backend.model.user.User;
 import com.attendanceList.backend.repositories.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -44,7 +46,7 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody @Validated RegisterUserDTO data) {
-        if(this.userRepository.findByEmail(data.email()) != null) return ResponseEntity.badRequest().build();
+        if(this.userRepository.findByEmail(data.email()) != null) return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponseDTO("Email already used."));
         
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
         User newUser = new User(data.email(), encryptedPassword, data.fullName(), data.role());
@@ -55,4 +57,5 @@ public class AuthenticationController {
     }
     
     
+
 }
