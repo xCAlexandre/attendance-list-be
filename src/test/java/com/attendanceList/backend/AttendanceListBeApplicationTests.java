@@ -1,10 +1,10 @@
-package com.sportsmatch.backend;
+package com.attendanceList.backend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class SportsMatchBeApplicationTests {
+class AttendanceListBeApplicationTests {
 
 	@Test
 	void contextLoads() {
